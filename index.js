@@ -6,7 +6,7 @@ const io = require('socket.io')(httpServer);
 const jwt = require('jsonwebtoken');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
-require('./seed');
+// require('./seed');
 const uri = "mongodb+srv://vercel-admin-user:1q2w3E*@cluster0.xfzcez4.mongodb.net/?retryWrites=true&w=majority";
 
 const path = require('path');
