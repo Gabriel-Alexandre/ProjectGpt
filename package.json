@@ -1,0 +1,15 @@
+{
+  "name": "projectgpt",
+  "version": "1.0.0",
+  "description": "Project development for my with help of chat gpt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel is the man",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.3.4"
+  }
+}
