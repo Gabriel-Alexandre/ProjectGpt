@@ -22,12 +22,12 @@ const userSchema = new mongoose.Schema({
   },
   age: {
     type: Number,
-    required: true
+    required: false
   },
   sex: {
     type: String,
     enum: ['Masculino', 'Feminino', 'Outro'],
-    required: true
+    required: false
   }
 });
 
