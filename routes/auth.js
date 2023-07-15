@@ -15,15 +15,18 @@ router.post('/login', async (req, res) => {
     }
 
     // Verificar a senha do usuário
-    if (!user.comparePassword(password)) {
-      return res.status(401).json({ error: 'Credenciais inválidas' });
-    }
+    user.comparePassword(password).then(response => {
+      if(!response) {
+        res.status(401).json({ error: 'Credenciais inválidas' });
+      } else {
+        // Gerar token JWT
+        const token = jwt.sign({ userId: user._id }, 'E7&HNx%4j2QJ*$#S@fG7B6x5bvP3n9tr', { expiresIn: '3h' });
 
-    // Gerar token JWT
-    const token = jwt.sign({ userId: user._id }, 'E7&HNx%4j2QJ*$#S@fG7B6x5bvP3n9tr', { expiresIn: '3h' });
+        // Retornar o token para o cliente
+        res.json({ token });
+      }
+    })
 
-    // Retornar o token para o cliente
-    res.json({ token });
   } catch (error) {
     res.status(500).json({ error: 'Erro ao fazer login' });
   }

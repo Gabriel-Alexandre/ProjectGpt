@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat com Autenticação</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form id="login-form">
+      <label for="email">Nome de Usuário:</label>
+      <input type="text" id="email" name="email" required>
+      <label for="password">Senha:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Entrar</button>
+    </form>
+
+    <div id="chat-container" style="display: none;">
+      <ul id="messages"></ul>
+      <form id="chat-form">
+        <input id="input-message" autocomplete="off" />
+        <button>Enviar</button>
+      </form>
+    </div>
+
+    <script 
+      src="https://cdn.socket.io/4.6.0/socket.io.min.js" 
+      integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" 
+      crossorigin="anonymous"></script>
+    <script>
+      const loginForm = document.getElementById('login-form');
+      const chatContainer = document.getElementById('chat-container');
+      let authToken = '';
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Chamar a função de login e enviar as credenciais
+        const loginResponse = await login(email, password);
+
+        if (loginResponse.token !== null && loginResponse.token !== undefined) {
+          // Se o login for bem-sucedido, armazenar o token
+          authToken = loginResponse.token;
+
+          // Exibir o chat
+          chatContainer.style.display = 'block';
+
+          // Iniciar conexão com o Socket.IO e enviar o token
+          const socket = io({
+            auth: {
+              token: authToken
+            }
+          });
+
+          const form = document.getElementById('chat-form');
+          const input = document.getElementById('input-message');
+          const messages = document.getElementById('messages');
+      
+          // Lida com evento de envio de mensagem do formulário
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const message = input.value;
+            socket.emit('chat message', message); // Envia a mensagem para o servidor
+            input.value = '';
+          });
+      
+          // Lida com evento de recebimento de mensagem do servidor
+          socket.on('chat message', (message) => {
+            const li = document.createElement('li');
+            li.textContent = message;
+            messages.appendChild(li);
+          });
+        } else {
+          // Se o login falhar, exibir uma mensagem de erro
+          alert(loginResponse.message);
+        }
+      });
+
+      async function login(email, password) {
+        try {
+          const response = await fetch('http://localhost:3000/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Erro ao fazer login:', error);
+          return { success: false, message: 'Erro ao fazer login' };
+        }
+      }
+    </script>
+  </body>
+</html>
