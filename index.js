@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 require('./seed');
+const uri = "mongodb+srv://vercel-admin-user:1q2w3E*@cluster0.xfzcez4.mongodb.net/?retryWrites=true&w=majority";
 
 const path = require('path');
 
@@ -53,7 +54,7 @@ httpServer.listen(3000, () => {
 });
 
 // Configuração com banco de dados
-mongoose.connect('mongodb://localhost/projectgpt', {
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

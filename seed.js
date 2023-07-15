@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const User = require('./models/User'); // Importe o modelo do usuário
 const bcrypt = require('bcrypt');
 
+const uri = "mongodb+srv://vercel-admin-user:1q2w3E*@cluster0.xfzcez4.mongodb.net/?retryWrites=true&w=majority";
+
 // Conecte-se ao banco de dados
-mongoose.connect('mongodb://localhost/projectgpt', {
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

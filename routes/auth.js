@@ -9,12 +9,10 @@ router.post('/login', async (req, res) => {
   try {
     // Verificar se o usuário existe no banco de dados
     const user = await User.findOne({ email });
-    console.log('aquiiii')
 
     if (!user) {
       return res.status(401).json({ error: 'Credenciais inválidas' });
     }
-    console.log('aquiiii2')
 
     // Verificar a senha do usuário
     user.comparePassword(password).then(response => {
