@@ -6,8 +6,11 @@ const io = require('socket.io')(httpServer);
 const jwt = require('jsonwebtoken');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
+require('dotenv').config();
+// Descomentar quando for executar a aplicação pela primeira vez
 // require('./seed');
-const uri = "mongodb+srv://vercel-admin-user:1q2w3E*@cluster0.xfzcez4.mongodb.net/?retryWrites=true&w=majority";
+
+const uri = process.env.DATABASE_URL;
 
 const path = require('path');
 
@@ -58,9 +61,9 @@ mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => {
-    console.log('Conectado ao banco de dados');
-  })
-  .catch((error) => {
-    console.error('Erro ao conectar ao banco de dados', error);
-  });
+.then(() => {
+  console.log('Conectado ao banco de dados');
+})
+.catch((error) => {
+  console.error('Erro ao conectar ao banco de dados', error);
+});

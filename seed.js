@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
 const User = require('./models/User'); // Importe o modelo do usuário
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
-const uri = "mongodb+srv://vercel-admin-user:1q2w3E*@cluster0.xfzcez4.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.DATABASE_URL;
 
 // Conecte-se ao banco de dados
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+}).then(() => {
+  console.log('Conectado ao banco de dados (SEED)');
+})
+.catch((error) => {
+  console.error('Erro ao conectar ao banco de dados (SEED)', error);
 });
 
 const users = [];
